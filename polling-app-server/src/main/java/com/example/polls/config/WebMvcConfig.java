@@ -11,13 +11,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private final long MAX_AGE_SECS = 3600;
 
     @Value("${app.cors.allowedOrigins}")
-    private String[] allowedOrigins;
+    private String allowedOrigins; // Use String instead of String[]
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins(allowedOrigins)
+                .allowedOrigins(allowedOrigins.split(",")) // Split the comma-separated string
                 .allowedMethods("HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE")
                 .maxAge(MAX_AGE_SECS);
     }
 }
+
