@@ -11,4 +11,4 @@ COPY target/polls-0.0.1-SNAPSHOT.jar poll.jar
 EXPOSE 8090
 
 # Set the entry point to run the JAR file
-ENTRYPOINT ["java", "-jar", "poll.jar"]
+ENTRYPOINT ["java", "-jar", "poll.jar","--server.port=8090"]
