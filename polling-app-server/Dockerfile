@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the JAR file from the host machine to the container
-COPY target/polls-0.0.1-SNAPSHOT.jar poll.jar
+COPY target/polls-1.0.0.jar poll.jar
 
 # Expose port 8090
 EXPOSE 8090
