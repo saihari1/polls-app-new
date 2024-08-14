@@ -27,7 +27,7 @@ jobs:
     - name: Build Backend Docker Image
       working-directory: polling-app-server
       run: |
-        docker build -t saihari1/hari-backend:latestb .
+        docker build -t saihari1/hari:polllatestb .
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
@@ -45,15 +45,15 @@ jobs:
     - name: Build Frontend Docker Image
       working-directory: polling-app-client
       run: |
-        docker build -t saihari1/hari-frontend:latestf .
+        docker build -t saihari1/hari:polllatestf .
 
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
     - name: Push Backend Docker Image
       run: |
-        docker push saihari1/hari-backend:latestb
+        docker push saihari1/hari:polllatestb
 
     - name: Push Frontend Docker Image
       run: |
-        docker push saihari1/hari-frontend:latestf
+        docker push saihari1/hari:polllatestf
