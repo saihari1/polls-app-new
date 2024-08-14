@@ -36,5 +36,28 @@ jobs:
     - name: Build Frontend
       working-directory: polling-app-client  # Updated path
       run: npm run build
+      
+    - name: Build Backend Docker Image
+      working-directory: polling-app-server
+      run: |
+        docker build -t saihari1/hari-pollbackend:27b .
+
+    - name: Build Frontend Docker Image
+      working-directory: polling-app-client
+      run: |
+        docker build -t saihari1/hari-pollfrontend:27f .
+
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+
+    - name: Push Backend Docker Image
+      run: |
+        docker tag saihari1/hari-pollbackend:27b saihari1/hari-pollbackend:27b
+        docker push saihari1/hari-pollbackend:27b
+
+    - name: Push Frontend Docker Image
+      run: |
+        docker tag saihari1/hari-pollfrontend:27f saihari1/hari-pollfrontend:27f
+        docker push saihari1/hari-pollfrontend:27f
 
   
