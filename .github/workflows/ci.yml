@@ -24,15 +24,24 @@ jobs:
       working-directory: polling-app-server
       run: mvn -B package --file pom.xml
 
+    - name: Check if JAR File Exists
+      working-directory: polling-app-server
+      run: ls -l target/
+
     - name: Rename JAR File
       working-directory: polling-app-server
       run: |
-        mv target/polls-0.0.1-SNAPSHOT.jar poll.jar
+        if [ -f target/polls-0.0.1-SNAPSHOT.jar ]; then
+          mv target/polls-0.0.1-SNAPSHOT.jar poll.jar
+        else
+          echo "JAR file not found!"
+          exit 1
+        fi
 
     - name: Build Backend Docker Image
       working-directory: polling-app-server
       run: |
-        docker build -t saihari1/hari-backend:pollblatest .
+        docker build -t saihari1/hari-backend:latestb .
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
@@ -50,15 +59,15 @@ jobs:
     - name: Build Frontend Docker Image
       working-directory: polling-app-client
       run: |
-        docker build -t saihari1/hari-frontend:pollflatest .
+        docker build -t saihari1/hari-frontend:latestf .
 
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
     - name: Push Backend Docker Image
       run: |
-        docker push saihari1/hari-backend:pollblatest
+        docker push saihari1/hari-backend:latestb
 
     - name: Push Frontend Docker Image
       run: |
-        docker push saihari1/hari-frontend:pollflatest
+        docker push saihari1/hari-frontend:latestf
