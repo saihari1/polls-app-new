@@ -24,20 +24,6 @@ jobs:
       working-directory: polling-app-server
       run: mvn -B package --file pom.xml
 
-    - name: Check if JAR File Exists
-      working-directory: polling-app-server
-      run: ls -l target/
-
-    - name: Rename JAR File
-      working-directory: polling-app-server
-      run: |
-        if [ -f target/polls-1.0.0.jar ]; then
-          mv target/polls-1.0.0.jar poll.jar
-        else
-          echo "JAR file not found!"
-          exit 1
-        fi
-
     - name: Build Backend Docker Image
       working-directory: polling-app-server
       run: |
