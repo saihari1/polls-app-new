@@ -22,7 +22,7 @@ jobs:
 
     - name: Build with Maven
       working-directory: polling-app-server
-      run: mvn clean install --file pom.xml
+      run: mvn clean package --file pom.xml
       
     - name: Set up Node.js
       uses: actions/setup-node@v3
