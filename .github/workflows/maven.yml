@@ -23,8 +23,18 @@ jobs:
     - name: Build with Maven
       working-directory: polling-app-server
       run: mvn clean install --file pom.xml
+      
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'  # Use the Node.js version you need
 
-    - name: Generate Dependency Graph
-      run: |
-        cd polling-app-server
-        mvn com.github.ferstl:depgraph-maven-plugin:4.0.1:graph -DgraphFormat=json
+    - name: Install npm Dependencies
+      working-directory: polling-app-client  # Updated path
+      run: npm install
+
+    - name: Build Frontend
+      working-directory: polling-app-client  # Updated path
+      run: npm run build
+
+  
