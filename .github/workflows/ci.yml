@@ -1,4 +1,4 @@
-name: Java CI with Maven
+name: Java CI with Maven and Docker
 
 on:
   push:
@@ -20,44 +20,45 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Build with Maven
+    - name: Build Backend with Maven
       working-directory: polling-app-server
-      run: mvn clean package --file pom.xml
-      
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'  # Use the Node.js version you need
+      run: mvn -B package --file pom.xml
 
-    - name: Install npm Dependencies
-      working-directory: polling-app-client  # Updated path
-      run: npm install
+    - name: Rename JAR File
+      working-directory: polling-app-server
+      run: |
+        mv target/polls-0.0.1-SNAPSHOT.jar poll.jar
 
-    - name: Build Frontend
-      working-directory: polling-app-client  # Updated path
-      run: npm run build
-      
     - name: Build Backend Docker Image
       working-directory: polling-app-server
       run: |
-        docker build -t saihari1/hari-pollbackend:27b .
+        docker build -t saihari1/hari-backend:pollblatest .
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install npm Dependencies
+      working-directory: polling-app-client
+      run: npm install
+
+    - name: Build Frontend
+      working-directory: polling-app-client
+      run: npm run build
 
     - name: Build Frontend Docker Image
       working-directory: polling-app-client
       run: |
-        docker build -t saihari1/hari-pollfrontend:27f .
+        docker build -t saihari1/hari-frontend:pollflatest .
 
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
     - name: Push Backend Docker Image
       run: |
-        docker tag saihari1/hari-pollbackend:27b saihari1/hari-pollbackend:27b
-        docker push saihari1/hari-pollbackend:27b
+        docker push saihari1/hari-backend:pollblatest
 
     - name: Push Frontend Docker Image
       run: |
-        docker tag saihari1/hari-pollfrontend:27f saihari1/hari-pollfrontend:27f
-        docker push saihari1/hari-pollfrontend:27f
-
-  
+        docker push saihari1/hari-frontend:pollflatest
