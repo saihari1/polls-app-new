@@ -72,8 +72,7 @@ jobs:
         docker push saihari1/hari:polllatestf
 
   sonarqube:
-    runs-on: 
-      - self-hosted
+    runs-on: self-hosted  # Runs on your configured self-hosted runner
 
     needs: build  # Ensures that SonarQube analysis runs after the 'build' job completes
 
@@ -81,14 +80,13 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
       with:
-        path: polling-app-server  # Check out the code again in the specified directory
-
+        path: polling-app-server  # Check out the code again if necessary
 
     - name: Run SonarQube Analysis for Backend
       working-directory: polling-app-server
       run: |
         sonar-scanner \
-          -Dsonar.projectKey=github-actions \
+          -Dsonar.projectKey=your_project_key \
           -Dsonar.sources=. \
           -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
