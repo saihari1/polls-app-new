@@ -84,17 +84,24 @@ jobs:
     - name: Set up SonarQube Scanner
       run: |
         # Define SonarQube Scanner version
-        SONAR_SCANNER_VERSION=5.6.0.33675
+        SONAR_SCANNER_VERSION=6.1.0.4477
         
         # Define download URL
         SONAR_SCANNER_URL=https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}-linux.zip
-        
+
         # Download SonarQube Scanner
-        sudo wget $SONAR_SCANNER_URL -O sonar-scanner.zip || { echo "Failed to download SonarQube Scanner"; exit 1; }
+        sudo curl -L $SONAR_SCANNER_URL -o sonar-scanner.zip || { echo "Failed to download SonarQube Scanner"; exit 1; }
         
-        # Unzip and install SonarQube Scanner
+        # Unzip SonarQube Scanner
         sudo unzip sonar-scanner.zip
+        
+        # Move SonarQube Scanner to /opt and set up path
         sudo mv sonar-scanner-${SONAR_SCANNER_VERSION}-linux /opt/sonar-scanner
+        
+        # Ensure the scanner is executable
+        sudo chmod +x /opt/sonar-scanner/bin/sonar-scanner
+        
+        # Add SonarQube Scanner to PATH
         sudo echo 'export PATH=$PATH:/opt/sonar-scanner/bin' >> $GITHUB_ENV
 
     - name: Run SonarQube Analysis for Backend
