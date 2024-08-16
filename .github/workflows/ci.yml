@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, azure]
 
     steps:
     - uses: actions/checkout@v4
@@ -24,18 +24,11 @@ jobs:
       working-directory: polling-app-server
       run: mvn -B package --file pom.xml
 
-    - name: Set up SonarQube Scanner
-      run: |
-        wget https://github.com/SonarSource/sonar-scanner-cli/releases/download/sonar-scanner-cli-5.6.0.33675/sonar-scanner-cli-5.6.0.33675-linux.zip
-        unzip sonar-scanner-cli-5.6.0.33675-linux.zip
-        mv sonar-scanner-5.6.0.33675-linux /opt/sonar-scanner
-        echo 'export PATH=$PATH:/opt/sonar-scanner/bin' >> $GITHUB_ENV
-
     - name: Run SonarQube Analysis for Backend
       working-directory: polling-app-server
       run: |
         sonar-scanner \
-          -Dsonar.projectKey=your_project_key \
+          -Dsonar.projectKey=github-actions \
           -Dsonar.sources=. \
           -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
@@ -47,9 +40,8 @@ jobs:
 
     - name: Install Trivy
       run: |
-        apt-get install -y wget
         wget https://github.com/aquasecurity/trivy/releases/download/v0.33.0/trivy_0.33.0_Linux-64bit.deb
-        dpkg -i trivy_0.33.0_Linux-64bit.deb
+        sudo dpkg -i trivy_0.33.0_Linux-64bit.deb
 
     - name: Run Trivy Scan for Backend
       run: |
