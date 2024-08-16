@@ -83,12 +83,6 @@ jobs:
       with:
         path: polling-app-server  # Check out the code again in the specified directory
 
-    - name: Set up SonarQube Scanner
-      run: |
-        wget https://github.com/SonarSource/sonar-scanner-cli/releases/download/sonar-scanner-cli-5.6.0.33675/sonar-scanner-cli-5.6.0.33675-linux.zip
-        unzip sonar-scanner-cli-5.6.0.33675-linux.zip
-        mv sonar-scanner-5.6.0.33675-linux /opt/sonar-scanner
-        echo 'export PATH=$PATH:/opt/sonar-scanner/bin' >> $GITHUB_ENV
 
     - name: Run SonarQube Analysis for Backend
       working-directory: polling-app-server
