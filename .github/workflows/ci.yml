@@ -72,15 +72,22 @@ jobs:
         docker push saihari1/hari:polllatestf
 
   sonarqube:
-    runs-on: self-hosted  # Runs on your configured self-hosted runner
+    runs-on: self-hosted  # Use your self-hosted runner
 
-    needs: build  # Ensures that SonarQube analysis runs after the 'build' job completes
+    needs: build  # Ensures SonarQube analysis runs after the 'build' job completes
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
       with:
         path: polling-app-server  # Check out the code again if necessary
+
+    - name: Set up SonarQube Scanner
+      run: |
+        # Download and install SonarQube Scanner
+        wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.6.0.33675-linux.zip
+        unzip sonar-scanner-cli-5.6.0.33675-linux.zip
+        sudo mv sonar-scanner-5.6.0.33675-linux /opt/sonar-scanner
+        echo 'export PATH=$PATH:/opt/sonar-scanner/bin' >> $GITHUB_ENV
 
     - name: Run SonarQube Analysis for Backend
       working-directory: polling-app-server
