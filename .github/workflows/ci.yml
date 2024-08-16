@@ -77,6 +77,16 @@ jobs:
     needs: build  # Ensures that SonarQube analysis runs after the 'build' job completes
 
     steps:
+    - name: Checkout Code for SonarQube Analysis
+      uses: actions/checkout@v4
+      with:
+        path: polling-app-server  # Check out the code again if necessary
+
+    - name: Set up SonarQube Scanner
+      run: |
+        # Set up the SonarQube Scanner path
+        echo 'export PATH=$PATH:/opt/sonarqube/bin' >> $GITHUB_ENV
+
     - name: Run SonarQube Analysis for Backend
       working-directory: polling-app-server
       run: |
