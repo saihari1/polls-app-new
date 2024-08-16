@@ -74,7 +74,7 @@ jobs:
   sonarqube:
     runs-on: self-hosted  # Use your self-hosted runner
 
-    needs: build  # Ensures SonarQube analysis runs after the 'build' job completes
+    needs: build  # Ensures that SonarQube analysis runs after the 'build' job completes
 
     steps:
     - uses: actions/checkout@v4
@@ -83,10 +83,18 @@ jobs:
 
     - name: Set up SonarQube Scanner
       run: |
-        # Download and install SonarQube Scanner
-        wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.6.0.33675-linux.zip
-        unzip sonar-scanner-cli-5.6.0.33675-linux.zip
-        sudo mv sonar-scanner-5.6.0.33675-linux /opt/sonar-scanner
+        # Define SonarQube Scanner version
+        SONAR_SCANNER_VERSION=5.6.0.33675
+        
+        # Define download URL
+        SONAR_SCANNER_URL=https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}-linux.zip
+        
+        # Download SonarQube Scanner
+        wget $SONAR_SCANNER_URL -O sonar-scanner.zip || { echo "Failed to download SonarQube Scanner"; exit 1; }
+        
+        # Unzip and install SonarQube Scanner
+        unzip sonar-scanner.zip
+        sudo mv sonar-scanner-${SONAR_SCANNER_VERSION}-linux /opt/sonar-scanner
         echo 'export PATH=$PATH:/opt/sonar-scanner/bin' >> $GITHUB_ENV
 
     - name: Run SonarQube Analysis for Backend
