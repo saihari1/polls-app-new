@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, azure]
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
@@ -23,15 +23,6 @@ jobs:
     - name: Build Backend with Maven
       working-directory: polling-app-server
       run: mvn -B package --file pom.xml
-
-    - name: Run SonarQube Analysis for Backend
-      working-directory: polling-app-server
-      run: |
-        sonar-scanner \
-          -Dsonar.projectKey=github-actions \
-          -Dsonar.sources=. \
-          -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
     - name: Build Backend Docker Image
       working-directory: polling-app-server
@@ -79,3 +70,22 @@ jobs:
     - name: Push Frontend Docker Image
       run: |
         docker push saihari1/hari:polllatestf
+
+  sonarqube:
+    runs-on: [self-hosted, azure]  # Specify labels for the self-hosted runner
+
+    needs: build  # Ensures that SonarQube analysis runs after the 'build' job completes
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        path: polling-app-server  # Check out the code again if necessary
+
+    - name: Run SonarQube Analysis for Backend
+      working-directory: polling-app-server
+      run: |
+        sonar-scanner \
+          -Dsonar.projectKey=github-actions \
+          -Dsonar.sources=. \
+          -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
