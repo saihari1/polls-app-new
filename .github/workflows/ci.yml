@@ -30,7 +30,7 @@ jobs:
         docker build -t saihari1/hari:polllatestb .
 
     - name: Set up Trivy
-      uses: aquasecurity/trivy-action@v0.3.0
+      uses: aquasecurity/trivy-action@v0.12.0
       with:
         scan-type: 'image'
         image-ref: 'saihari1/hari:polllatestb'
@@ -56,7 +56,7 @@ jobs:
         docker build -t saihari1/hari:polllatestf .
 
     - name: Run Trivy Scan for Frontend
-      uses: aquasecurity/trivy-action@v0.3.0
+      uses: aquasecurity/trivy-action@v0.12.0
       with:
         scan-type: 'image'
         image-ref: 'saihari1/hari:polllatestf'
