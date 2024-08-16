@@ -72,43 +72,16 @@ jobs:
         docker push saihari1/hari:polllatestf
 
   sonarqube:
-    runs-on: self-hosted  # Use your self-hosted runner
+    runs-on: self-hosted
 
     needs: build  # Ensures that SonarQube analysis runs after the 'build' job completes
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        path: polling-app-server  # Check out the code again if necessary
-
-    - name: Set up SonarQube Scanner
-      run: |
-        # Define SonarQube Scanner version
-        SONAR_SCANNER_VERSION=6.1.0.4477
-        
-        # Define download URL
-        SONAR_SCANNER_URL=https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}-linux.zip
-
-        # Download SonarQube Scanner
-        sudo curl -L $SONAR_SCANNER_URL -o sonar-scanner.zip || { echo "Failed to download SonarQube Scanner"; exit 1; }
-        
-        # Unzip SonarQube Scanner
-        sudo unzip sonar-scanner.zip
-        
-        # Move SonarQube Scanner to /opt and set up path
-        sudo mv sonar-scanner-${SONAR_SCANNER_VERSION}-linux /opt/sonar-scanner
-        
-        # Ensure the scanner is executable
-        sudo chmod +x /opt/sonar-scanner/bin/sonar-scanner
-        
-        # Add SonarQube Scanner to PATH
-        sudo echo 'export PATH=$PATH:/opt/sonar-scanner/bin' >> $GITHUB_ENV
-
     - name: Run SonarQube Analysis for Backend
       working-directory: polling-app-server
       run: |
         sonar-scanner \
-          -Dsonar.projectKey=your_project_key \
+          -Dsonar.projectKey=github-actions \
           -Dsonar.sources=. \
-          -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+          -Dsonar.host.url=http://4.227.167.184:9000 \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
