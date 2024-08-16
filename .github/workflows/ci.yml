@@ -83,6 +83,6 @@ jobs:
         sonar-scanner \
           -Dsonar.projectKey=github-actions \
           -Dsonar.sources=. \
-          -Dsonar.java.binaries=target/classes \
+          -Dsonar.java.binaries=target/test-classes \
           -Dsonar.host.url=http://4.227.167.184:9000 \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
