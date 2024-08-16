@@ -29,13 +29,15 @@ jobs:
       run: |
         docker build -t saihari1/hari:polllatestb .
 
-    - name: Set up Trivy
-      uses: aquasecurity/trivy-action@v0.12.0
-      with:
-        scan-type: 'image'
-        image-ref: 'saihari1/hari:polllatestb'
-        severity: 'HIGH,CRITICAL'
-        ignore-unfixed: true
+    - name: Install Trivy
+      run: |
+        sudo apt-get install -y wget
+        wget https://github.com/aquasecurity/trivy/releases/download/v0.33.0/trivy_0.33.0_Linux-64bit.deb
+        sudo dpkg -i trivy_0.33.0_Linux-64bit.deb
+
+    - name: Run Trivy Scan for Backend
+      run: |
+        trivy image --exit-code 1 --severity HIGH,CRITICAL saihari1/hari:polllatestb || true
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
@@ -56,12 +58,8 @@ jobs:
         docker build -t saihari1/hari:polllatestf .
 
     - name: Run Trivy Scan for Frontend
-      uses: aquasecurity/trivy-action@v0.12.0
-      with:
-        scan-type: 'image'
-        image-ref: 'saihari1/hari:polllatestf'
-        severity: 'HIGH,CRITICAL'
-        ignore-unfixed: true
+      run: |
+        trivy image --exit-code 1 --severity HIGH,CRITICAL saihari1/hari:polllatestf || true
 
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
