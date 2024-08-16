@@ -28,7 +28,7 @@ jobs:
       working-directory: polling-app-server
       run: |
         docker build -t saihari1/hari:polllatestb .
-
+        
     - name: Install Trivy
       run: |
         wget https://github.com/aquasecurity/trivy/releases/download/v0.33.0/trivy_0.33.0_Linux-64bit.deb
@@ -77,22 +77,12 @@ jobs:
     needs: build  # Ensures that SonarQube analysis runs after the 'build' job completes
 
     steps:
-    - name: Checkout Code for SonarQube Analysis
-      uses: actions/checkout@v4
-      with:
-        path: polling-app-server  # Check out the code again if necessary
-
-    - name: Set up SonarQube Scanner
-      run: |
-        # Set up the SonarQube Scanner path
-        echo 'export PATH=$PATH:/opt/sonarqube/bin' >> $GITHUB_ENV
-
     - name: Run SonarQube Analysis for Backend
       working-directory: polling-app-server
       run: |
         sonar-scanner \
           -Dsonar.projectKey=github-actions \
           -Dsonar.sources=. \
-          -Dsonar.host.url=http://4.227.167.184:9000 \
           -Dsonar.java.binaries=target/classes \
+          -Dsonar.host.url=http://4.227.167.184:9000 \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
