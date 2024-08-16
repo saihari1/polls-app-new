@@ -28,7 +28,7 @@ jobs:
       working-directory: polling-app-server
       run: |
         docker build -t saihari1/hari:polllatestb .
-        
+
     - name: Install Trivy
       run: |
         wget https://github.com/aquasecurity/trivy/releases/download/v0.33.0/trivy_0.33.0_Linux-64bit.deb
@@ -83,6 +83,6 @@ jobs:
         sonar-scanner \
           -Dsonar.projectKey=github-actions \
           -Dsonar.sources=. \
-          -Dsonar.java.binaries=target/classes/com/example/polls \
+          -Dsonar.java.binaries=target/classes \
           -Dsonar.host.url=http://4.227.167.184:9000 \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
