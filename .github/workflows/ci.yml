@@ -1,4 +1,4 @@
-name: Java CI with Maven, Docker, and SonarQube
+name: Java CI with Maven, Docker,  SonarQube
 
 on:
   push:
