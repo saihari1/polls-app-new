@@ -22,7 +22,7 @@ jobs:
 
     - name: Build Backend with Maven
       working-directory: polling-app-server
-      run: mvn -B package --file pom.xml
+      run: mvn clean install --file pom.xml
 
     - name: Build Backend Docker Image
       working-directory: polling-app-server
