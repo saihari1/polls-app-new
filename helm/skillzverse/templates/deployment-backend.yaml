@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "skillzverse.fullname" . }}-backend
+spec:
+  replicas: {{ .Values.backend.replicas }}
+  selector:
+    matchLabels:
+      app: {{ include "skillzverse.fullname" . }}-backend
+  template:
+    metadata:
+      labels:
+        app: {{ include "skillzverse.fullname" . }}-backend
+    spec:
+{{- if .Values.imagePullSecretName }}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecretName }}
+{{- end }}
+      containers:
+        - name: backend
+          image: "{{ .Values.backend.image }}"
+          ports:
+            - containerPort: {{ .Values.backend.containerPort }}
