@@ -1,0 +1,37 @@
+# default values
+namespace: default
+
+frontend:
+  image: "saihari1/skillzverse:client1"
+  containerPort: 3000
+  replicas: 1
+  servicePort: 80
+
+backend:
+  image: "saihari1/skillzverse:server1"
+  containerPort: 8090
+  replicas: 1
+  servicePort: 80
+
+# the imagePull secret name already present in your manifests
+imagePullSecretName: docker-pwd
+
+ingress:
+  enabled: true
+  className: nginx
+  tls:
+    hosts:
+      - polling.harinadh.xyz
+      - app.harinadh.xyz
+    secretName: nginx-tls-default
+  rules:
+    - host: polling.harinadh.xyz
+      paths:
+        - path: /(.*)
+          serviceName: skillzverse-frontend-service
+          servicePort: 80
+    - host: app.harinadh.xyz
+      paths:
+        - path: /(.*)
+          serviceName: skillzverse-backend-service
+          servicePort: 80
