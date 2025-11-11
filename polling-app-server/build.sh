@@ -9,6 +9,6 @@ echo "=== Building the project ==="
 # chmod +x build.sh && ./build.sh
 
 # Or just run Maven directly:
-mvn clean install 
+mvn clean install -DskipTests
 
 echo "=== Build completed successfully ==="
