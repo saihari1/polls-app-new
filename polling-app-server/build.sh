@@ -1,13 +1,8 @@
 #!/bin/bash
 set -e
 
-echo "=== Cloning GitHub repo ==="
-git clone https://github.com/saihari1/polls-app-new.git
-
 echo "=== Moving into backend project ==="
 cd polls-app-new/polling-app-server
-
-
 
 echo "=== Building the project ==="
 # If you have a bash build script:
