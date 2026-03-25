@@ -1,14 +1,16 @@
-# Use the official Java 17 base image
-FROM eclipse-temurin:17-jdk-jammy
-
-# Set the working directory inside the container
+FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# Copy the JAR file from the host machine to the container
-COPY target/polls-1.0.0.jar /app/polls-1.0.0.jar
+COPY pom.xml .
+COPY src ./src
 
-# Expose port 8090
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:17-jre-jammy
+WORKDIR /app
+
+COPY --from=build /app/target/*.jar app.jar
+
 EXPOSE 8090
 
-# Set the entry point to run the JAR file
-ENTRYPOINT ["java", "-jar", "polls-1.0.0.jar", "--server.port=8090"]
+ENTRYPOINT ["java", "-jar", "app.jar", "--server.port=8090"]
