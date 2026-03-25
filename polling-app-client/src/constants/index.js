@@ -1,4 +1,4 @@
-export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://api.harinadh.xyz/api';
+export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://dazzling-nature-production-f8d7.up.railway.app/api';
 export const ACCESS_TOKEN = 'accessToken';
 
 export const POLL_LIST_SIZE = 30;
