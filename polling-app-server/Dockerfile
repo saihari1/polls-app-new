@@ -5,7 +5,7 @@ WORKDIR /app
 
 # Copy pom.xml file into the image
 COPY pom.xml
-COPY src  /src
+COPY src  ./src
 
 # Run Maven build to package the app
 RUN mvn clean package -DskipTests
