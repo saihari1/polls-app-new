@@ -1,24 +1,26 @@
-# Build stage
+# Step 1: Build Stage
 FROM maven:3.9-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
-# Copy the pom.xml file and the source code
+# Copy pom.xml file into the image
 COPY pom.xml .
+
+# Copy the src directory into the image
 COPY src ./src
 
-# Run the Maven build command
+# Run Maven build to package the app
 RUN mvn clean package -DskipTests
 
-# Second stage: running the application
+# Step 2: Runtime Stage (production)
 FROM eclipse-temurin:17-jre-jammy
 
 WORKDIR /app
 
-# Copy the built JAR file from the build stage
+# Copy the built .jar file from the build stage
 COPY --from=build /app/target/*.jar app.jar
 
-# Expose the port the app will run on
+# Expose the port the app runs on
 EXPOSE 8090
 
 # Command to run the Java application
