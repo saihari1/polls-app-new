@@ -18,6 +18,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins(allowedOrigins.split(",")) // Split the comma-separated string
                 .allowedMethods("HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE")
+                .allowedHeaders("Content-Type", "Authorization", "X-Requested-With", "Accept")
                 .maxAge(MAX_AGE_SECS);
     }
 }
