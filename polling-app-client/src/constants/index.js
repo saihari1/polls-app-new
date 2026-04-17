@@ -1,4 +1,4 @@
-export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://merry-adventure.railway.internal:3000/api';
+export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://reliable-charisma-production.up.railway.app/api';
 export const ACCESS_TOKEN = 'accessToken';
 
 export const POLL_LIST_SIZE = 30;
