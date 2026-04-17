@@ -1,4 +1,4 @@
-export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://merry-adventure.railway.internal:8090/api';
+export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://roundhouse.proxy.rlwy.net:16001/api';
 export const ACCESS_TOKEN = 'accessToken';
 
 export const POLL_LIST_SIZE = 30;
